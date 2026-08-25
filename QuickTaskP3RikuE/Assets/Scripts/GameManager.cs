@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;   
-
+using UnityEngine.Audio;
 public class GameManager : MonoBehaviour
 {
     public Button restartButton;
@@ -12,11 +12,21 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI gameOverText;
     public bool isGameActive = true;
     public GameObject Player;
-    public float yRange = -2f;  
+    public float yRange = -2f;
+    public GameObject EndPoint;
+    public AudioSource audioSource;
+    public AudioClip Sound;
+    public RawImage backgroundImage;
+    public float xRange = .2f;
+    public GameObject targetImage;
+  
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
+        backgroundImage = GetComponent<RawImage>();
+        Sound = GetComponent<AudioClip>();
+         
     }
 
 
@@ -26,9 +36,21 @@ public class GameManager : MonoBehaviour
         if (Player.transform.position.y <= yRange)
         {
            GameOver();
-           Object.Destroy(Player);
+           
+        }
+        if (Player.transform.position.x >= xRange)
+        {
+            GameOver();
+            targetImage.SetActive(true);
+           
+           
         }
 
+
+    }
+    public void PlaySound(AudioClip Clip)
+    {
+        audioSource.PlayOneShot(Clip);
     }
     public void GameOver()
     {
@@ -47,6 +69,10 @@ public class GameManager : MonoBehaviour
         {
             GameOver();
         }
+       
+
+
+
     }
     public void RestartGame()
     {
